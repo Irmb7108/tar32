@@ -702,12 +702,6 @@ async def info(client: Client, message: types.Message, chat: int | str = None, u
         await message.reply_photo(photo.file_id,       caption=textinfo)
 
 
-@bot.on_message(filters.command(["r"]))
-async def chat_member(_: Client, message: types.Message, chat: int | str = None, user: int | str = None):
-    chat = message.chat.id if not chat else chat
-    user = message.from_user.id if not user else user
-    data = await bot.get_chat_member(chat, user)
-    users = data.status.value
     print(users)
     await message.reply_text(users)
     #datastatus = (data.status).split(".")
@@ -966,5 +960,16 @@ async def eval(client, message):
 for x in app.get_chat_members(message.chat.id):
     if x.user.last_online_date:
         id[x.user.id] = x.user.last_online_date
-    print(id)			
+    print(id)
+@app.on_message(filters.command(["test"]))
+async def tset(b, Message):
+    await message.reply("hiii")	
+
+@bot.on_message(filters.command(["mb"]))
+async def chat_member(_: Client, message: types.Message, chat: int | str = None, user: int | str = None):
+    chat = message.chat.id if not chat else chat
+    user = message.from_user.id if not user else user
+    data = await bot.get_chat_member(chat, user)
+    users = data.status.value
+    await message.reply("hi")		
 bot.run()
