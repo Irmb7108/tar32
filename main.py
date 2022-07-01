@@ -22,7 +22,7 @@ from pyrogram.errors import *
 #from parser import mention_markdown
 #import encode_string
 import json
-from pyrohelpers import  * #extract_user ,get_file_id,last_online
+#from pyrohelpers import  * #extract_user ,get_file_id,last_online
 bot= Client(
     "my_account",
     api_id=16116648, api_hash="1aa4178adaa58f92e6db71a381fb3a9b",
