@@ -638,23 +638,6 @@ async def deleteCommand(client, message):
     #        await message.reply_to_message.delete()
     #     else:
     #
-@bot.on_message(filters.command(["eval", f"eval@{bot_username}"]))
-async def evaluate(client, message, authorized=False):
-    if(message.from_user.id == owner_id or authorized):
-        cmd = " ".join(message.command[1:])
-        result = eval(cmd)   
-#status_message = await message.reply_text("`Running ...`")
-        try:
-           # cmd = message.text.split(" ", maxsplit=1)[1]
-            
-            await message.reply_text(result)
-
-        except IndexError:
-            await message.reply_text("eror")
-           # return
-       # reply_to_id = message.message_id
-        #if message.reply_to_message:
-            #reply_to_id = message.reply_to_message.message_id
 
 
 
