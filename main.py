@@ -1,8 +1,7 @@
 import base64
 import os
-import io
+from io import BytesIO
 import sys
-import traceback
 import urllib
 from datetime import datetime, timedelta
 from os import getenv
@@ -954,54 +953,19 @@ async def jsonify(_, message):
             reply_markup=reply_markup
         )
         os.remove("json.text")
-@bot.on_message(filters.user(owner_id) & filters.command("eval"))
-async def eval(client, message):
-	status_message = await message.reply_text("Processing ...")
-	cmd = message.text.split(" ", maxsplit=1)[1]
-	reply_to_ = message
-	if message.reply_to_message:
-		reply_to_ = message.reply_to_message
-		
-	old_stderr = sys.stderr
-	old_stdout = sys.stdout
-	redirected_output = sys.stdout = io.StringIO()
-	redirected_error = sys.stderr = io.StringIO()
-	stdout, stderr, exc = None, None, None
+@bot.on_message( filters.private & filters.reply & filters.command( ["eval", "evaluate", "run"] ))
+async def evaluation(bot, update): 
+	output = evaluate(update.reply_to_message.text) 
+	try: 
+		if len(output) < 4096:
+			await update.reply_text( text=output, reply_markup=BUTTONS, disable_web_page_preview=True, quote=True )		
+		else: 
+			with BytesIO(str.encode(str(output))) as output_file: 
+			output_file.name = "output.txt" 
+			await update.reply_document( document=output_file, caption="Made by @GodBoyX", reply_markup=BUTTONS, quote=True )
+	except Exception as error: 
+		await update.reply_text( text=error, reply_markup=BUTTONS, disable_web_page_preview=True, quote=True )
 
-	try:
-		await aexec(cmd, client, message)
-	except Exception:
-			exc = traceback.format_exc()
-	stdout = redirected_output.getvalue() 
-	stderr = redirected_error.getvalue()
-	sys.stdout = old_stdout 
-	sys.stderr = old_stderr
-	evaluation = ""
-	if exc:
-		evaluation = exc
-	elif stderr:
-		evaluation = stderr
-	elif stdout:
-		evaluation = stdout
-	else:
-		evaluation = "Success"
-	final_output = "<b>EVAL</b>: "
-	final_output += f"<code>{cmd}</code>\n\n"
-	final_output += "<b>OUTPUT</b>:\n"
-	final_output += f"<code>{evaluation.strip()}</code> \n"
-	if len(final_output) > 4096:
-		with io.BytesIO(str.encode(final_output)) as out_file:
-				out_file.name = "eval.text"
-				await reply_to_.reply_document( document=out_file, caption=cmd, disable_notification=True )
-	else:
-		await reply_to_.reply_text(final_output)
-	await status_message.delete()
-async def aexec(code, client, message):
-			exec(
-			"async def __aexec(client, message): "
-			+ "".join(f"\n {l_}" for l_ in code.split("\n")) )
-			return await locals()["__aexec"](client, message)
-			
 	 
 	 
 
