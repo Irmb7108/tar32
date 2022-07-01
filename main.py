@@ -968,16 +968,17 @@ async def jsonify(_, message):
             reply_markup=reply_markup
         )
         os.remove("json.text")
-
-
-@bot.on_message(filters.command("evl"))
-async def echo (client, message):
-    msg = message.text.split("/evl ")
-    if len(msg) == 1:
-        await bot.send_message(message.chat.id, message.text)
-        await bot.send_message(message.chat.id, "You entered only command.\nNext Time Try:- /echo some_text_here")
-    else:
-        result = msg[1]
-        result = eval(msg)
-    await bot.send_message(message.chat.id, result)
+@app.on_message(filters.command("eval", prefixes=".") & filters.me)
+def eva_l(_, msg): 
+	error = 0
+	toeval = msg.text.split(".eval ", maxsplit=1)[1] 		toeval_edit = toeval
+	toeval_edit = toeval.replace('**', '^^')
+	ret_str = "**Expression:**\n"
+	ret_str += toeval_edit
+	ret_str += '\n' 
+	ret_str += "**Result**:\n" 
+	try: 
+	    ret_str += str(eval(toeval)) 
+	except Exception as e:
+            error = 1 #ret_str = ('**Invalid** **expression** **format**') if error == 0: msg.edit(ret_str) else: msg.edit('**Invalid** **
 bot.run()
