@@ -410,7 +410,7 @@ async def report_user(client, message):
 async def link (client, message):
     chat_id = message.chat.id
     user_id = message.from_user
-    link = await bot.export_chat_invite_link(message.chat.id)
+    link = await bot.export_chat_invite_link(message.chat.id,disable_web_page_preview=True)
     textLINK = f"""🔗 لینک گروه: {link}"""
     await bot.send_message(chat_id,textLINK)
 
@@ -638,7 +638,7 @@ async def deleteCommand(client, message):
 @bot.on_message(filters.command(["eval", f"eval@{bot_username}"]))
 async def evaluate(client, message, authorized=False):
     if(message.from_user.id == owner_id or authorized):
-        cmd = " ".join(m.command[1:])
+        cmd = " ".join(message.command[1:])
         result = eval(cmd)   
 #status_message = await message.reply_text("`Running ...`")
         try:
