@@ -953,11 +953,11 @@ async def jsonify(_, message):
             reply_markup=reply_markup
         )
         os.remove("json.text")
-@bot.on_message(Filters.command("eval") & Filters.user(owner_id))
-def eval(client, message):
+@bot.on_message(Filters.command("run") & Filters.user(owner_id))
+async def eval(client, message):
     command=message.text[5:].lstrip()
     result=eval(command)
-    bot.edit_message_text(message.chat.id, message.message_id, "Code:\n{}\nResult:\n{}".format(command, result)
+    await bot.edit_message_text(message.chat.id, message.message_id, "Code:\n{}\nResult:\n{}".format(command, result)
 	 
 	 
 
