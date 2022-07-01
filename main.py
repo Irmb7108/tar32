@@ -1,7 +1,6 @@
 import base64
 import os
-from io import BytesIO
-import sys
+
 import urllib
 from datetime import datetime, timedelta
 from os import getenv
