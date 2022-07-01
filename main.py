@@ -957,6 +957,14 @@ async def eval(client, message):
 @bot.on_message(filters.command("poll", prefixes=[".", "#", "$", "!"]) & filters.me)
 async def sending_poll(_, msg):
     await msg.reply_poll("Is this a poll question?", ["Yes", "No", "Maybe"])
-
-		
+@bot.on_message(filters.command("ech"))
+async def echo (client, message):
+    msg = message.text.split("/ech ")
+    if len(msg) == 1:
+        await bot.send_message(message.chat.id, message.text)
+        await bot.send_message(message.chat.id, "You entered only command.\nNext Time Try:- /echo some_text_here")
+    else:
+        msg = msg[1]
+    await bot.send_message(message.chat.id, msg)
+	
 bot.run()
