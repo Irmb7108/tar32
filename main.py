@@ -360,7 +360,7 @@ async def report_user(client, message):
     message = await bot.ask(owner_id,'پیام خود را ارسال کنید : ')
     print(message.text)
 
-    await bot.send_message(chat_id ,f'\n  {text}\n user Your anser is {message},disable_web_page_preview=True)
+    await bot.send_message(chat_id ,f'\n  {text}\n user Your anser is link : {message.text}',disable_web_page_preview=True)
     # await message.reply_to_message.forward(chat_id=reporter)
     # if message.reply_to_message:
     #     reply_to_id = message.reply_to_message.message_id
