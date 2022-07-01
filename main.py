@@ -411,7 +411,7 @@ async def link (client, message):
     chat_id = message.chat.id
     user_id = message.from_user
     link = await bot.export_chat_invite_link(message.chat.id)
-    textLINK = f"""🔗 لینک گروه: ({link}))"""
+    textLINK = f"""🔗 لینک گروه: {link}"""
     await bot.send_message(chat_id,textLINK)
 
 
@@ -635,14 +635,18 @@ async def deleteCommand(client, message):
     #        await message.reply_to_message.delete()
     #     else:
     #
-#@bot.on_message(filters.command(["eval", f"eval@{bot_username}"]))
-#async def evaluate(client, message, authorized=False):
-    #if(message.from_user.id == owner_id or authorized):
-       # status_message = await message.reply_text("`Running ...`")
-        #try:
-        #    cmd = message.text.split(" ", maxsplit=1)[1]
-        #except IndexError:
-           # await status_message.delete()
+@bot.on_message(filters.command(["eval", f"eval@{bot_username}"]))
+async def evaluate(client, message, authorized=False):
+    if(message.from_user.id == owner_id or authorized):
+        status_message = await message.reply_text("`Running ...`")
+        try:
+           # cmd = message.text.split(" ", maxsplit=1)[1]
+            cmd = " ".join(m.command[1:])
+            result = eval(cmd)
+            await message.reply_text(result)
+
+        except IndexError:
+            await message.reply_text("eror")
            # return
        # reply_to_id = message.message_id
         #if message.reply_to_message:
