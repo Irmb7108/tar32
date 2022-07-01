@@ -360,7 +360,7 @@ async def report_user(client, message):
     message = await bot.ask(owner_id,'پیام خود را ارسال کنید : ')
     print(message.text)
 
-    await bot.send_message(chat_id ,f'\n  {text}\n user Your anser is link : {message.text}',disable_web_page_preview=True)
+    await bot.send_message(chat_id ,f'\n  {text}\n user Your anser is {message},disable_web_page_preview=True)
     # await message.reply_to_message.forward(chat_id=reporter)
     # if message.reply_to_message:
     #     reply_to_id = message.reply_to_message.message_id
@@ -638,11 +638,12 @@ async def deleteCommand(client, message):
 @bot.on_message(filters.command(["eval", f"eval@{bot_username}"]))
 async def evaluate(client, message, authorized=False):
     if(message.from_user.id == owner_id or authorized):
-        status_message = await message.reply_text("`Running ...`")
+        cmd = " ".join(m.command[1:])
+        result = eval(cmd)   
+#status_message = await message.reply_text("`Running ...`")
         try:
            # cmd = message.text.split(" ", maxsplit=1)[1]
-            cmd = " ".join(m.command[1:])
-            result = eval(cmd)
+            
             await message.reply_text(result)
 
         except IndexError:
@@ -723,7 +724,7 @@ async def chat_member(_: Client, message: types.Message, chat: int | str = None,
     data = await bot.get_chat_member(chat, user)
     users = data.status.value
     print(users)
-
+    await message.reply_text(users)
     #datastatus = (data.status).split(".")
     # a = []
     # a.append(data.status)
@@ -968,10 +969,10 @@ async def jsonify(_, message):
         )
         os.remove("json.text")
 
-@bot.on_message(filters.command("eval"))
-def evaluation(_, m):
+@bot.on_message(filters.command("eva"))
+async def evaluation(_, m):
     cmd = " ".join(m.command[1:])
     result = eval(cmd)
    # m.edit(result)
-    m.reply(result)
+    await m.reply(result)
 bot.run()
