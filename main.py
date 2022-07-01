@@ -34,20 +34,101 @@ owner_id = int("1259219363")
 bot_username = "Atreg006bot"
 def getFullName(user):
     return " ".join([user.first_name if user.first_name else "", user.last_name if user.last_name else ""]).strip()
-@bot.on_message(filters.new_chat_members, group=1)
-async def hg(bot: Client, msg: Message):
-    #lang = await get_str(msg.chat.id)
-  # LAN = lan(lang)
+@bot.on_message(filters.new_chat_members)
+async def auto_welcome(bot: bot, msg: Message):
+
+    # first = msg.from_user.first_name
+    # last = msg.from_user.last_name
+    # mention = msg.from_user.mention
+    # username = msg.from_user.username
+    id = msg.from_user.id
+    useradd = msg.new_chat_members[0].mention
+    iduser =  msg.new_chat_members[0].id
+    group_name = msg.chat.title
+    group_username = msg.chat.username
+    name_button = "🔰 JOIN NOW 🔰"
+    link_button = "t.me/bodyguard_ch"
+    button_name = os.environ.get("WELCOME_BUTTON_NAME", name_button)
+    button_link = os.environ.get("WELCOME_BUTTON_LINK", link_button)
     for new_user in msg.new_chat_members:
-        if new_user.id == BOT_ID:
+        if new_user.id == bot_username:
             await msg.reply(
                 'Thanks for adding to the group.'
             )
 
-        elif new_user.id == owner_id:
+        elif new_user.id == owner_id
             await msg.reply('Welcome My Owner')
         else:
             await msg.reply(f'Welcome group {new_user.mention}')
+    welcome_text = f"""Hey {useradd} Welcome To **{group_name}**  id: `{iduser}`
+date : {msg.date}"""
+#     WELCOME_TEXT = os.environ.get("WELCOME_TEXT", welcome_text)
+#     # print("Welcome Message Activate")
+#     BUTTON = bool(os.environ.get("WELCOME_BUTTON"))
+# #     # if not BUTTON:
+# #
+#     # # else:
+    await msg.reply_text(welcome_text)
+#
+START_BUTTONS = InlineKeyboardMarkup(
+    [
+        [
+            InlineKeyboardButton('⚙️ Help', callback_data='help'),
+            InlineKeyboardButton('About 🔰', callback_data='about'),
+            InlineKeyboardButton('Close ✖️', callback_data='close')
+        ]
+    ]
+)
+
+buttons = [[
+    InlineKeyboardButton('➕ 𝗮𝗱𝗱 𝗰𝗵𝗮𝘁 ➕', url=f'http://t.me/@Noruto321_bot?startgroup=true')
+], [
+    InlineKeyboardButton('🤠 𝗵𝗲𝗹𝗽 🤠', callback_data='help'),
+    InlineKeyboardButton('🤓 𝗮𝗯𝗼𝘂𝘁 🤓', callback_data='about')
+], [
+    InlineKeyboardButton('🔎 𝘀𝗲𝗮𝗿𝗰𝗵 🔍', switch_inline_query_current_chat='')
+], [
+    InlineKeyboardButton('👨‍💻 𝘀𝘂𝗽𝗽𝗼𝗿𝘁 👩‍💻', url='https://t.me/movie_bus6')
+], [
+    InlineKeyboardButton('🤠 𝘆𝗼𝘂 𝘁𝘂𝗯𝗲 🤠', url='https://youtube.com/channel/UCVbKgUOGVEdQlmLJ_fXrWMQ')
+], [
+    InlineKeyboardButton('🤐 𝗰𝗹𝗼𝘀𝗲 🤐', callback_data='close_data')
+]]
+HELP_BUTTONS = InlineKeyboardMarkup(
+    [
+        [
+            InlineKeyboardButton('🏘 Home', callback_data='home'),
+            InlineKeyboardButton('About 🔰', callback_data='about'),
+            InlineKeyboardButton('Close ✖️', callback_data='close')
+        ]
+    ]
+)
+
+ABOUT_BUTTONS = InlineKeyboardMarkup(
+    [
+        [
+            InlineKeyboardButton('🏘 Home', callback_data='home'),
+            InlineKeyboardButton('Help ⚙️', callback_data='help'),
+            InlineKeyboardButton('Close ✖️', callback_data='close')
+        ]
+    ]
+)
+
+HELP_BUTTON = InlineKeyboardMarkup( [[
+       InlineKeyboardButton("Telegram id", callback_data="id"),
+       InlineKeyboardButton("Telegram info ", callback_data="info")
+       ]]
+)
+class Translation(object):
+    ABOUT = """
+    📝 Language: Python 3
+    🧰 Framework: Pyrogram
+    👨‍💻 Developer: [Anonymous](https://t.me/ir_mb)
+    📮 Channel: [کانال ربات بادیگارد](https://t.me/Bodyguard_Ch)
+    👥 Group: [گروه پشتیبانی ربات ](https://t.me/Bodyguard_Ch)
+    """
+    back = "welcom"
+
     buttons = [[
         InlineKeyboardButton('➕ 𝗮𝗱𝗱 𝗰𝗵𝗮𝘁 ➕', url=f'http://t.me/@Noruto321_bot?startgroup=true')
     ], [
