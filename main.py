@@ -411,7 +411,7 @@ async def link (client, message):
     chat_id = message.chat.id
     user_id = message.from_user
     link = await bot.export_chat_invite_link(message.chat.id)
-    textLINK = f"""🔗 لینک گروه: {link}"""
+    textLINK = f"""**🔗 لینک گروه**: {link}"""
     await bot.send_message(chat_id,textLINK,disable_web_page_preview=True)
 
 
@@ -977,6 +977,7 @@ async def echo (client, message):
         await bot.send_message(message.chat.id, message.text)
         await bot.send_message(message.chat.id, "You entered only command.\nNext Time Try:- /echo some_text_here")
     else:
-        msg = eval(msg[1])
-    await bot.send_message(message.chat.id, msg)
+        result = msg[1]
+        result = eval(msg)
+    await bot.send_message(message.chat.id, result)
 bot.run()
