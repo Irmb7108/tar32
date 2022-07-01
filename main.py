@@ -953,19 +953,11 @@ async def jsonify(_, message):
             reply_markup=reply_markup
         )
         os.remove("json.text")
-@bot.on_message( filters.private & filters.reply & filters.command( ["eval", "evaluate", "run"] ))
-async def evaluation(bot, update): 
-	output = evaluate(update.reply_to_message.text) 
-	try: 
-		if len(output) < 4096:
-			await update.reply_text( text=output, reply_markup=BUTTONS, disable_web_page_preview=True, quote=True )		
-		else: 
-			with BytesIO(str.encode(str(output))) as output_file: 
-			output_file.name = "output.txt" 
-			await update.reply_document( document=output_file, caption="Made by @GodBoyX", reply_markup=BUTTONS, quote=True )
-	except Exception as error: 
-		await update.reply_text( text=error, reply_markup=BUTTONS, disable_web_page_preview=True, quote=True )
-
+@bot.on_message(Filters.command("eval") & Filters.user(owner_id))
+def eval(client, message):
+    command=message.text[5:].lstrip()
+    result=eval(command)
+    bot.edit_message_text(message.chat.id, message.message_id, "Code:\n{}\nResult:\n{}".format(command, result)
 	 
 	 
 
