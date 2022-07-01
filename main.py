@@ -50,16 +50,6 @@ async def auto_welcome(bot: bot, msg: Message):
     link_button = "t.me/bodyguard_ch"
     button_name = os.environ.get("WELCOME_BUTTON_NAME", name_button)
     button_link = os.environ.get("WELCOME_BUTTON_LINK", link_button)
-    for new_user in msg.new_chat_members:
-        if new_user.id == bot_username:
-            await msg.reply(
-                'Thanks for adding to the group.'
-            )
-
-        elif new_user.id == owner_id
-            await msg.reply('Welcome My Owner')
-        else:
-            await msg.reply(f'Welcome group {new_user.mention}')
     welcome_text = f"""Hey {useradd} Welcome To **{group_name}**  id: `{iduser}`
 date : {msg.date}"""
 #     WELCOME_TEXT = os.environ.get("WELCOME_TEXT", welcome_text)
