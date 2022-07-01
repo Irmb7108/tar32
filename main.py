@@ -953,23 +953,13 @@ async def eval(client, message):
     result=eval(command)
     await bot.edit_message_text(message.chat.id, message.message_id, "Code:\n{}\nResult:\n{}".format(command, result)
 	 
-@bot.on_message(filters.command("rn")	 
-async def eval(client, message):
-   await message.reply("hi")
-   id = {}
-for x in app.get_chat_members(message.chat.id):
-    if x.user.last_online_date:
-        id[x.user.id] = x.user.last_online_date
-    print(id)
-@app.on_message(filters.command(["test"]))
-async def tset(b, Message):
-    await message.reply("hiii")	
 
-@bot.on_message(filters.command(["mb"]))
-async def chat_member(_: Client, message: types.Message, chat: int | str = None, user: int | str = None):
-    chat = message.chat.id if not chat else chat
-    user = message.from_user.id if not user else user
-    data = await bot.get_chat_member(chat, user)
-    users = data.status.value
-    await message.reply("hi")		
+@bot.on_message(filters.command("poll", prefixes=[".", "#", "$", "!"]) & filters.me)
+async def sending_poll(_, msg):
+    await msg.reply_poll("Is this a poll question?", ["Yes", "No", "Maybe"])
+
+app.run()
+
+
+		
 bot.run()
