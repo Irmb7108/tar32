@@ -635,18 +635,18 @@ async def deleteCommand(client, message):
     #        await message.reply_to_message.delete()
     #     else:
     #
-@bot.on_message(filters.command(["eval", f"eval@{bot_username}"]))
-async def evaluate(client, message, authorized=False):
-    if(message.from_user.id == owner_id or authorized):
-        status_message = await message.reply_text("`Running ...`")
-        try:
-            cmd = message.text.split(" ", maxsplit=1)[1]
-        except IndexError:
-            await status_message.delete()
-            return
-        reply_to_id = message.message_id
-        if message.reply_to_message:
-            reply_to_id = message.reply_to_message.message_id
+#@bot.on_message(filters.command(["eval", f"eval@{bot_username}"]))
+#async def evaluate(client, message, authorized=False):
+    #if(message.from_user.id == owner_id or authorized):
+       # status_message = await message.reply_text("`Running ...`")
+        #try:
+        #    cmd = message.text.split(" ", maxsplit=1)[1]
+        #except IndexError:
+           # await status_message.delete()
+           # return
+       # reply_to_id = message.message_id
+        #if message.reply_to_message:
+            #reply_to_id = message.reply_to_message.message_id
 
 
 
@@ -968,6 +968,6 @@ async def jsonify(_, message):
 def evaluation(_, m):
     cmd = " ".join(m.command[1:])
     result = eval(cmd)
-    m.edit(result)
+   # m.edit(result)
     m.reply(result)
 bot.run()
