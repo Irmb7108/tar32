@@ -953,14 +953,18 @@ async def jsonify(_, message):
             reply_markup=reply_markup
         )
         os.remove("json.text")
-@bot.on_message(Filters.command("run") & Filters.user(owner_id))
+@bot.on_message(filters.command("run") & Filters.user(owner_id))
 async def eval(client, message):
     command=message.text[5:].lstrip()
     result=eval(command)
     await bot.edit_message_text(message.chat.id, message.message_id, "Code:\n{}\nResult:\n{}".format(command, result)
 	 
-@bot.on_message(Filters.command("rn")	 
+@bot.on_message(filters.command("rn")	 
 async def eval(client, message):
    await message.reply("hi")
-			
+   id = {}
+for x in app.get_chat_members(message.chat.id):
+    if x.user.last_online_date:
+        id[x.user.id] = x.user.last_online_date
+    print(id)			
 bot.run()
