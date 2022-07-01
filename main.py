@@ -959,7 +959,8 @@ async def eval(client, message):
     result=eval(command)
     await bot.edit_message_text(message.chat.id, message.message_id, "Code:\n{}\nResult:\n{}".format(command, result)
 	 
-	 
-
+@bot.on_message(Filters.command("rn")	 
+async def eval(client, message):
+   await message.reply("hi")
 			
 bot.run()
