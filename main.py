@@ -411,8 +411,7 @@ async def link (client, message):
     chat_id = message.chat.id
     user_id = message.from_user
     link = await bot.export_chat_invite_link(message.chat.id)
-    textLINK = f"""👥 LINK Group:
-    \n link🔗 :({link}))"""
+    textLINK = f"""🔗 لینک گروه: ({link}))"""
     await bot.send_message(chat_id,textLINK)
 
 
@@ -909,7 +908,7 @@ async def who_is(client, message):
     message_out_str += f"<b>➨ Data Centre:</b> <code>{dc_id}</code>\n"
     message_out_str += f"<b>➨ User Name:</b> @{username}\n"
     message_out_str += f"<b>➨ User 𝖫𝗂𝗇𝗄:</b> <a href='tg://user?id={from_user.id}'><b>Click Here</b></a>\n"
-    # await message.reply_text((message_out_str))
+    await message.reply_text((message_out_str))
     # file_info = get_file_id(message.reply_to_message)
     # file_info = get_file_id(message)
     # file_info = ( f"""
@@ -965,5 +964,10 @@ async def jsonify(_, message):
         )
         os.remove("json.text")
 
-
+@bot.on_message(filters.command("eval"))
+def evaluation(_, m):
+    cmd = " ".join(m.command[1:])
+    result = eval(cmd)
+    m.edit(result)
+    m.reply(result)
 bot.run()
