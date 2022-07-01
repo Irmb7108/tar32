@@ -958,8 +958,5 @@ async def eval(client, message):
 async def sending_poll(_, msg):
     await msg.reply_poll("Is this a poll question?", ["Yes", "No", "Maybe"])
 
-app.run()
-
-
 		
 bot.run()
