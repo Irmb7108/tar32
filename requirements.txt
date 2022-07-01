@@ -9,3 +9,6 @@ PySocks==1.7.1
 requests==2.27.1
 translation==1.0.5
 urllib3==1.26.9
+sys
+traceback
+io
