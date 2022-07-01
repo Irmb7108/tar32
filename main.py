@@ -36,8 +36,8 @@ def getFullName(user):
     return " ".join([user.first_name if user.first_name else "", user.last_name if user.last_name else ""]).strip()
 @bot.on_message(filters.new_chat_members, group=1)
 async def hg(bot: Client, msg: Message):
-    lang = await get_str(msg.chat.id)
-    LAN = lan(lang)
+    #lang = await get_str(msg.chat.id)
+  # LAN = lan(lang)
     for new_user in msg.new_chat_members:
         if new_user.id == BOT_ID:
             await msg.reply(
