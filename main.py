@@ -27,7 +27,7 @@ bot= Client(
     "my_account",
     api_id=16116648, api_hash="1aa4178adaa58f92e6db71a381fb3a9b",
 
-    bot_token="5534536059:AAFyi0mr_Hun9F5XXbYqHG7tuA8pfSh5_U8"
+    bot_token="1321771253:AAEceIiELd_aCu_bu_MWnq0uXAQzG6Lo80I"
 )
 
 owner_id = int("1259219363")
