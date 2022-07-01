@@ -410,9 +410,9 @@ async def report_user(client, message):
 async def link (client, message):
     chat_id = message.chat.id
     user_id = message.from_user
-    link = await bot.export_chat_invite_link(message.chat.id,disable_web_page_preview=True)
+    link = await bot.export_chat_invite_link(message.chat.id)
     textLINK = f"""🔗 لینک گروه: {link}"""
-    await bot.send_message(chat_id,textLINK)
+    await bot.send_message(chat_id,textLINK,disable_web_page_preview=True)
 
 
 
@@ -969,10 +969,14 @@ async def jsonify(_, message):
         )
         os.remove("json.text")
 
-@bot.on_message(filters.command("eva"))
-async def evaluation(_, m):
-    cmd = " ".join(m.command[1:])
-    result = eval(cmd)
-   # m.edit(result)
-    await m.reply(result)
+
+@bot.on_message(filters.command("evl"))
+async def echo (client, message):
+    msg = message.text.split("/evl ")
+    if len(msg) == 1:
+        await bot.send_message(message.chat.id, message.text)
+        await bot.send_message(message.chat.id, "You entered only command.\nNext Time Try:- /echo some_text_here")
+    else:
+        msg = eval(msg[1])
+    await bot.send_message(message.chat.id, msg)
 bot.run()
