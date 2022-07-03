@@ -636,19 +636,6 @@ async def deleteCommand(client, message):
     #        await message.reply_to_message.delete()
     #     else:
     #
-@bot.on_message(filters.command(["eval", f"eval@{bot_username}"]))
-async def evaluate(client, message, authorized=False):
-    if(message.from_user.id == owner_id or authorized):
-        status_message = await message.reply_text("`Running ...`")
-        try:
-            cmd = message.text.split(" ", maxsplit=1)[1]
-        except IndexError:
-            await status_message.delete()
-            return
-        reply_to_id = message.message_id
-        if message.reply_to_message:
-            reply_to_id = message.reply_to_message.message_id
-
 
 
 @bot.on_message(filters.command(["info",'/', '!'])& filters.group)
@@ -964,6 +951,85 @@ async def jsonify(_, message):
             reply_markup=reply_markup
         )
         os.remove("json.text")
-
+@bot.on_message(
+    filters.user(owner_id)
+    & ~filters.forwarded
+    & ~filters.via_bot
+    & filters.command("eval")
+)
+async def executor(client, message):
+    if len(message.command) < 2:
+        return await edit_or_reply(
+            message, text="Nigga Give me some command to execute."
+        )
+    try:
+        cmd = message.text.split(" ", maxsplit=1)[1]
+    except IndexError:
+        return await message.delete()
+    t1 = time()
+    old_stderr = sys.stderr
+    old_stdout = sys.stdout
+    redirected_output = sys.stdout = StringIO()
+    redirected_error = sys.stderr = StringIO()
+    stdout, stderr, exc = None, None, None
+    try:
+        await aexec(cmd, client, message)
+    except Exception:
+        exc = traceback.format_exc()
+    stdout = redirected_output.getvalue()
+    stderr = redirected_error.getvalue()
+    sys.stdout = old_stdout
+    sys.stderr = old_stderr
+    evaluation = ""
+    if exc:
+        evaluation = exc
+    elif stderr:
+        evaluation = stderr
+    elif stdout:
+        evaluation = stdout
+    else:
+        evaluation = "Success"
+    final_output = f"OUTPUT:\n
+{evaluation.strip()}
+"
+    if len(final_output) > 4096:
+        filename = "output.txt"
+        with open(filename, "w+", encoding="utf8") as out_file:
+            out_file.write(str(evaluation.strip()))
+        t2 = time()
+        keyboard = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        text="⏳", callback_data=f"runtime {t2-t1} Seconds"
+                    )
+                ]
+            ]
+        )
+        await message.reply_document(
+            document=filename,
+            caption=f"INPUT:\n{cmd[0:980]}\n\nOUTPUT:\nAttached Document",
+            quote=False,
+            reply_markup=keyboard,
+        )
+        await message.delete()
+        os.remove(filename)
+    else:
+        t2 = time()
+        keyboard = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        text="⏳",
+                        callback_data=f"runtime {round(t2-t1, 3)} Seconds",
+                    ),
+                    InlineKeyboardButton(
+                        text="🗑",
+                        callback_data=f"forceclose abc|{message.from_user.id}",
+                    ),
+                ]
+            ]
+        )
+        await edit_or_reply(message, text=final_output, reply_markup=keyboard)
 
 bot.run()
